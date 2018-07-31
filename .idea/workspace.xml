@@ -250,7 +250,7 @@
       <workItem from="1532692806245" duration="487000" />
       <workItem from="1532863556265" duration="1446000" />
       <workItem from="1532948988510" duration="7068000" />
-      <workItem from="1533036784477" duration="5728000" />
+      <workItem from="1533036784477" duration="5983000" />
     </task>
     <task id="LOCAL-00001" summary="app组件按钮功能完善">
       <created>1533042449251</created>
@@ -263,7 +263,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23835000" />
+    <option name="totallyTimeSpent" value="24090000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
