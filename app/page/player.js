@@ -1,9 +1,11 @@
 import React from 'react';
 import Progress from '../components/progress';
+import '../static/common.css';
 import './player.less';
 import {Link} from 'react-router';
 import $ from 'jquery';
 import 'jplayer';
+import {PubSub} from 'pubsub-js';
 
 let duration = null;
 class Player extends React.Component {
@@ -20,6 +22,7 @@ class Player extends React.Component {
         this.prev = this.prev.bind(this);
         this.play = this.play.bind(this);
         this.next = this.next.bind(this);
+        this.changeRepeat = this.changeRepeat.bind(this);
     }
 
     componentDidMount() {
@@ -57,7 +60,7 @@ class Player extends React.Component {
     }
 
     prev() {
-
+        PubSub.publish('PLAY_PREV');
     }
 
     play() {
@@ -72,7 +75,11 @@ class Player extends React.Component {
     }
 
     next() {
+        PubSub.publish('PLAY_NEXT');
+    }
 
+    changeRepeat() {
+        PubSub.publish('CHANGE_REPEAT');
     }
 
     render() {
@@ -86,7 +93,7 @@ class Player extends React.Component {
                         <div className="row mt20">
                             <div className="left-time -col-auto">-{this.state.leftTime}</div>
                             <div className="volume-container">
-                                <i className="icon-volume rt" style={{top: 5, left: -5}}></i>
+                                <i className="icon-volume rt" style={{top: 5, left: -5}}/>
                                 <div className="volume-wrapper">
                                     <Progress
                                         progress={this.state.volume}
@@ -105,12 +112,12 @@ class Player extends React.Component {
                         </div>
                         <div className="mt35 row">
                             <div>
-                                <i className="icon prev" onClick={this.prev}></i>
-                                <i className={`icon ml20 ${this.state.isPlay ? 'pause' : 'play'}`} onClick={this.play}></i>
-                                <i className="icon next ml20" onClick={this.next}></i>
+                                <i className="icon prev" onClick={this.prev}/>
+                                <i className={`icon ml20 ${this.state.isPlay ? 'pause' : 'play'}`} onClick={this.play}/>
+                                <i className="icon next ml20" onClick={this.next}/>
                             </div>
                             <div className="-col-auto">
-                                <i className={`icon repeat-${this.props.repeatType}`} onClick={this.changeRepeat}></i>
+                                <i className={`icon repeat-${this.props.repeatType}`} onClick={this.changeRepeat}/>
                             </div>
                         </div>
                     </div>
