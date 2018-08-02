@@ -2,7 +2,7 @@ import React from 'react';
 import './static/reset.css';
 import MUSIC_LIST from '../config/musiclist';
 import $ from 'jquery';
-import PubSub from 'pubsub-js';
+import {PubSub} from 'pubsub-js';
 import { Router, IndexRoute, Link, Route, browserHistory, hashHistory} from 'react-router';
 
 import Header from './components/header';
@@ -43,7 +43,8 @@ class App extends React.Component {
                 musicList: this.state.musicList.filter(music => {
                     return music !== item;
                 })
-            })
+            });
+            console.log(this.state.musicList);
         });
 
         PubSub.subscribe('PLAY_NEXT', () => {
@@ -67,7 +68,7 @@ class App extends React.Component {
     componentWillUnmount() {
         PubSub.unsubscribe('PLAY_MUSIC');
         PubSub.unsubscribe('DEL_MUSIC');
-        PubSub.unsubscribe('CHANAGE_REPEAT');
+        PubSub.unsubscribe('CHANGE_REPEAT');
         PubSub.unsubscribe('PLAY_NEXT');
         PubSub.unsubscribe('PLAY_PREV');
     }
@@ -117,14 +118,28 @@ class App extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="container">
                 <Header/>
                 {/*    <List musicList={MUSIC_LIST} currentMusicItem=''/>  */}
-                <Player currentMusicItem={this.state.currentMusicItem}
-                    repeatType={this.state.repeatType}/>
+                {/*     <Player currentMusicItem={this.state.currentMusicItem}*/}
+                {/*     repeatType={this.state.repeatType}/>     */}
+                {   React.cloneElement(this.props.children, this.state) }
             </div>
         );
     }
 }
 
-export default App;
+class Root extends React.Component {
+    render() {
+        return (
+            <Router history={hashHistory}>
+                <Route path="/" component={App}>
+                    <IndexRoute component={Player}/>
+                    <Route path="/list" component={List}/>
+                </Route>
+            </Router>
+        )
+    }
+}
+
+export default Root;
