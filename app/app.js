@@ -3,12 +3,13 @@ import './static/reset.css';
 import MUSIC_LIST from '../config/musiclist';
 import $ from 'jquery';
 import {PubSub} from 'pubsub-js';
-import { Router, IndexRoute, Link, Route, browserHistory, hashHistory} from 'react-router';
+import { Router, IndexRoute, Route, hashHistory} from 'react-router';
 
 import Header from './components/header';
 import Player from './page/player.js';
 import List from './page/list.js';
 
+console.log(MUSIC_LIST);
 class App extends React.Component {
     constructor() {
         super();
@@ -28,6 +29,7 @@ class App extends React.Component {
             useStateClassSkin: true
         });
 
+        console.log(this.state.musicList);
         this.playMusic(this.state.musicList[0]);
 
         $('#player').bind($.jPlayer.event.ended, () => {
@@ -74,6 +76,7 @@ class App extends React.Component {
     }
 
     playMusic(item) {
+        console.log(item);
         $("#player").jPlayer("setMedia", {
             mp3: item.file
         }).jPlayer('play');
