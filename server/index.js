@@ -48,8 +48,7 @@ app.get('/index',function(req,res){
         });
 });
 
-const server = app.listen(8081,function () {
-   let host = server.address().address;
-   let port = server.address().port;
-   console.log('地址链接为 http://%s:s%', host, port);
+const PORT = 8081;
+app.listen(PORT,function () {
+   console.log(`地址链接为 http://localhost:${8081}`);
 });

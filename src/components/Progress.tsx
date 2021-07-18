@@ -1,27 +1,27 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './progress.css';
 
-class Progress extends React.Component {
-    constructor(props) {
-        super(props);
-        this.changeProgress = this.changeProgress.bind(this);
-        this.progressBar = ele => {
-            this.refProgress = ele;
-        }
-    }
+interface IProgress {
+    barColor: string;
+    progress: number;
+    onChangeProgress: (progress: number) => void;
+}
 
-    changeProgress(e) {
-        let progress = (e.clientX - this.refProgress.getBoundingClientRect().left) / this.refProgress.clientWidth;
-        this.props.onChangeProgress && this.props.onChangeProgress(progress);
-    }
+function Progress (props: IProgress) {
+    const progressBar = useRef<HTMLDivElement>(null);
+    
+    const changeProgress = (e) => {
+        const node = progressBar.current;
+        if (node === null) return;
+        const progress = (e.clientX - node.getBoundingClientRect().left) / node.clientWidth;
+        props.onChangeProgress && props.onChangeProgress(progress);
+    };
 
-    render() {
-        return (
-            <div className="components-progress" ref={this.progressBar} onClick={this.changeProgress}>
-                <div className="progress" style={{background: this.props.barColor, width: `${this.props.progress}%`}}/>
-            </div>
-        )
-    }
+    return (
+        <div className="components-progress" ref={progressBar} onClick={changeProgress}>
+            <div className="progress" style={{background: props.barColor, width: `${props.progress}%`}}/>
+        </div>
+    );
 }
 
 export default Progress;
