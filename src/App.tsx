@@ -12,7 +12,7 @@ function App() {
     <Router>
       <Switch>
         <Route path="/list">
-          <List musicList={MUSIC_LIST} />
+          <List musicList={MUSIC_LIST} currentMusicItem={MUSIC_LIST[0]} />
         </Route>
         <Route path="/">
           <MusicPlayer />

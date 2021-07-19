@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "howler": "^2.2.3",
     "jplayer": "^2.9.2",
     "jquery": "^3.6.0",
     "less": "^4.1.1",

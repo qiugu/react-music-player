@@ -7,7 +7,7 @@ import Player, { RepeatType } from './Player';
 
 function MusicPlayer () {
     const [ list, setList ] = useState(MUSIC_LIST);
-    const [ curMusicItem, setCurMusicItem ] = useState({});
+    const [ curMusicItem, setCurMusicItem ] = useState(MUSIC_LIST[0]);
     const [ repeatType, setRepeatType ] = useState(RepeatType.CYCLE);
 
     const playMusic = (item) => {
@@ -19,7 +19,9 @@ function MusicPlayer () {
     };
 
     const findMusicIndex = (music) => {
-        const index = list.indexOf(music);
+        const index = list.findIndex((item) => {
+            return item.id === music.id;
+        });
         return Math.max(0, index);
     }
 
@@ -31,7 +33,6 @@ function MusicPlayer () {
             index = (index + list.length - 1) % list.length;
         }
         const musicItem = list[index];
-        setCurMusicItem(musicItem);
         playMusic(musicItem);
     };
 
@@ -90,13 +91,13 @@ function MusicPlayer () {
             setRepeatType(RepeatType[index]);
         });
 
-        return () => {
-            PubSub.unsubscribe('PLAY_MUSIC');
-            PubSub.unsubscribe('DEL_MUSIC');
-            PubSub.unsubscribe('CHANGE_REPEAT');
-            PubSub.unsubscribe('PLAY_NEXT');
-            PubSub.unsubscribe('PLAY_PREV');
-        };
+        // return () => {
+        //     PubSub.unsubscribe('PLAY_MUSIC');
+        //     PubSub.unsubscribe('DEL_MUSIC');
+        //     PubSub.unsubscribe('CHANGE_REPEAT');
+        //     PubSub.unsubscribe('PLAY_NEXT');
+        //     PubSub.unsubscribe('PLAY_PREV');
+        // };
     }, []);
 
     return (
