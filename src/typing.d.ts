@@ -1,3 +1,3 @@
-declare namespace jQuery {
+namespace jQuery {
   export var jPlayer: any;
 }

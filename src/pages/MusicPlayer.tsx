@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MUSIC_LIST from '../config/musiclist';
 import Header from '../components/Header';
-import $ from 'jquery';
-import PubSub from 'pubsub-js';
 import Player, { RepeatType } from './Player';
 
 function MusicPlayer () {
@@ -11,9 +9,6 @@ function MusicPlayer () {
     const [ repeatType, setRepeatType ] = useState(RepeatType.CYCLE);
 
     const playMusic = (item) => {
-        $("#player").jPlayer("setMedia", {
-            mp3: item.file
-        }).jPlayer('play');
 
         setCurMusicItem(item);
     };
@@ -57,39 +52,9 @@ function MusicPlayer () {
     };
 
     useEffect(() => {
-        $("#player").jPlayer({
-            supplied: "mp3",
-            wmode: "window",
-            useStateClassSkin: true
-        });
 
         playMusic(list[0]);
 
-        $('#player').bind($.jPlayer.event.ended, () => {
-            playWhenEnd();
-        });
-
-        PubSub.subscribe('PLAY_MUSIC', (msg, item) => {
-            playMusic(item);
-        });
-
-        PubSub.subscribe('DEL_MUSIC', (msg, item) => {
-            setList(list.filter(music => music !== item));
-        });
-
-        PubSub.subscribe('PLAY_NEXT', () => {
-            playNext();
-        });
-
-        PubSub.subscribe('PLAY_PREV', () => {
-            playNext('prev');
-        });
-
-        PubSub.subscribe('CHANGE_REPEAT', () => {
-            //获得循环状态在数组中的索引，每次点击索引加1，因为数组长度为3，所以%3，则索引一直会在0~2之间
-            const index = (repeatType + 1) % 3;
-            setRepeatType(RepeatType[index]);
-        });
 
         // return () => {
         //     PubSub.unsubscribe('PLAY_MUSIC');

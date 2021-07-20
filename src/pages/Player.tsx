@@ -1,11 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Howl } from 'howler';
 import Progress from '../components/Progress';
 import '../static/common.css';
 import './player.css';
-import { Link } from 'react-router-dom';
-import $ from 'jquery';
-import 'jplayer';
-import PubSub from 'pubsub-js';
 
 export enum RepeatType {
     CYCLE,
@@ -20,12 +18,13 @@ interface IPlayer {
 
 function Player (props: IPlayer) {
     const [ progress, setProgress ] = useState(20);
-    const [ volume, setVolume ] = useState(50);
+    const [ volume, setVolume ] = useState(0.5);
     const [ leftTime, setLeftTime ] = useState('0:00');
     const [ isPlay, setIsPlay ] = useState(true);
     const duration = useRef(0);
+    const audioPlayer = useRef<Howl>(null);
 
-    const formatTime = (time) => {
+    const formatTime = (time: DOMHighResTimeStamp) => {
         time = Math.floor(time);
         let minutes = Math.floor(time / 60);
         let seconds = Math.floor(time % 60);
@@ -33,47 +32,29 @@ function Player (props: IPlayer) {
     };
 
     const changeVolumeHandle = (progress) => {
-        $('#player').jPlayer('volume', progress);
     };
 
     const changeProgressHandle = (progress) => {
-        $('#player').jPlayer('play', duration.current * progress);
-
-        setIsPlay(true);
     };
 
     const prev = () => {
-        PubSub.publish('PLAY_PREV');
     };
 
     const play = () => {
-        if (isPlay) {
-            $('#player').jPlayer('pause');
-        } else {
-            $('#player').jPlayer('play');
-        }
-        setIsPlay(state => !state);
     };
 
     const next = () => {
-        PubSub.publish('PLAY_NEXT');
     };
 
     const changeRepeat = () => {
-        PubSub.publish('CHANGE_REPEAT');
     };
 
     useEffect(() => {
-        $('#player').bind($.jPlayer.event.timeupdate, e => {
-            duration.current = e.jPlayer.status.duration;
-            setProgress(e.jPlayer.status.currentPercentAbsolute);
-            setVolume(e.jPlayer.options.volume * 100);
-            setLeftTime(formatTime(duration.current * (1 - e.jPlayer.status.currentPercentAbsolute / 100)));
+        audioPlayer.current = new Howl({
+            src: [props.currentMusicItem.file],
+            html5: true,
+            volume: volume
         });
-
-        return () => {
-            $('#player').unbind($.jPlayer.event.timeupdate);
-        };
     }, []);
 
     return (

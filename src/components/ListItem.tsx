@@ -1,7 +1,5 @@
 import React from 'react';
 import './listitem.css';
-import PubSub from 'pubsub-js';
-import 'jquery';
 
 interface IListItem {
     data: any;
@@ -10,12 +8,10 @@ interface IListItem {
 
 function ListItem (props: IListItem) {
     const playMusic = (item) => () => {
-        PubSub.publish('PLAY_MUSIC',item);
     };
 
     const deleteHandle = (item) => (e) => {
         e.stopPropagation();
-        PubSub.publish('DEL_MUSIC', item);
     };
 
     return (
