@@ -4,7 +4,7 @@ const MUSIC_LIST = [
         title: '表演时间',
         artist: '本兮',
         file: 'http://www.ytmp3.cn/down/49265.mp3',
-        cover: 'http://oeff2vktt.bkt.clouddn.com/image/58.jpg'
+        cover: 'http://q1.qlogo.cn/g?b=qq&nk=1239158377&s=100&t=1626872603'
     },
     {
         id: 2,
