@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import MUSIC_LIST from '../config/musiclist';
 import Header from '../components/Header';
-import Player, { RepeatType } from './Player';
+import Player, { RepeatType } from './AudioPlayer';
 
 function MusicPlayer () {
     const [ list, setList ] = useState(MUSIC_LIST);
