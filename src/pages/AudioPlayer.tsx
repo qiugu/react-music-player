@@ -50,7 +50,6 @@ function AudioPlayer(props: IPlayer) {
    */
   const play = (idx?: number) => {
     idx = typeof idx === 'number' ? idx : index;
-    console.log(idx);
     const data = props.list[idx];
 
     let sound: Howl;
@@ -62,7 +61,6 @@ function AudioPlayer(props: IPlayer) {
       sound = data.howl = new Howl({
         src: [data.file],
         html5: true,
-        volume: volume / 100,
         onplay () {
           const duration = formatTime(Math.round(sound.duration() || 0));
           setDuration(duration);
