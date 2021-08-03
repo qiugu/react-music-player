@@ -2,4 +2,10 @@
 
 React Hooks的音乐播放器
 
-<small>仅作为娱乐，如有侵权，立即删除</small>
+## 启动项目
+
+```sh
+npm run dev
+```
+
+<small>仅作学习，如有侵权，立即删除</small>
