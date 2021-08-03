@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Howl, Howler } from 'howler';
 
@@ -31,25 +31,23 @@ export enum RepeatType {
 
 interface IPlayer {
   list: IPlayerItem[];
-  repeatType: RepeatType;
 };
 
 function AudioPlayer(props: IPlayer) {
-  const [ index, setIndex ] = useState(0); // 播放列表索引
+  const index = useRef(0); // 播放列表索引
   const [ duration, setDuration ] = useState('0:00'); // 当前音频的总时长
   const [ timer, setTimer ] = useState('0:00'); // 当前音频播放的时间
   const [ progress, setProgress ] = useState(0); // 当前音频播放的位置
-  const [ curItem, setCurItem ] = useState<IPlayerItem | null>(null); // 当前正在播放的实例
+  const [ repeatType, setRepeatType ] = useState(RepeatType.CYCLE); // 音频播放顺序
+  const [ isPlay, setIsPlay ] = useState(false);
   const [ volume, setVolume ] = useState(20);
-
-  const isPlay = useMemo(() => curItem?.howl?.playing(), [curItem?.howl?.playing()]);
 
   /**
    * 播放指定索引的音频
    * @param index 播放音频的索引
    */
   const play = (idx?: number) => {
-    idx = typeof idx === 'number' ? idx : index;
+    idx = typeof idx === 'number' ? idx : index.current;
     const data = props.list[idx];
 
     let sound: Howl;
@@ -61,13 +59,13 @@ function AudioPlayer(props: IPlayer) {
       sound = data.howl = new Howl({
         src: [data.file],
         html5: true,
+        volume: volume / 100,
         onplay () {
-          const duration = formatTime(Math.round(sound.duration() || 0));
-          setDuration(duration);
+          setDuration(formatTime(Math.round(sound.duration() || 0)));
           requestAnimationFrame(step);
         },
         onend () {
-          switch (props.repeatType) {
+          switch (repeatType) {
             case RepeatType.ONCE:
               break;
             case RepeatType.RANDOM:
@@ -86,13 +84,15 @@ function AudioPlayer(props: IPlayer) {
 
     sound.play();
 
-    setIndex(idx);
-    setCurItem(data);
+    index.current = idx;
+    setIsPlay(true);
   };
 
   const pause = () => {
-    if (!curItem?.howl) throw new Error('当前音频不存在!');
-    curItem.howl.pause();
+    const sound = props.list[index.current];
+    if (!sound.howl) throw new Error('当前音频不存在!');
+    sound.howl.pause();
+    setIsPlay(false);
   };
 
   /**
@@ -103,13 +103,13 @@ function AudioPlayer(props: IPlayer) {
     let idx = 0;
     switch (direction) {
       case IDirection.PREV:
-        idx = index - 1;
+        idx = index.current - 1;
         if (idx < 0) {
           idx = props.list.length - 1;
         }
         break;
       case IDirection.NEXT:
-        idx = index + 1;
+        idx = index.current + 1;
         if (idx > props.list.length - 1) {
           idx = 0;
         }
@@ -124,17 +124,18 @@ function AudioPlayer(props: IPlayer) {
 
   /**
    * 跳转到指定索引的音频进行播放
-   * @param index 
+   * @param idx 
    */
-  const skipTo = (index: number) => {
+  const skipTo = (idx: number) => {
     // 停止当前播放的音频
-    if (curItem?.howl !== undefined) {
-      curItem.howl.stop();
+    const sound = props.list[index.current];
+    if (sound.howl !== undefined) {
+      sound.howl.stop();
     }
 
-    setProgress(0);
+    // setProgress(0);
     // 重置播放
-    play(index);
+    play(idx);
   };
 
   const changeVolume = (val: number) => {
@@ -143,41 +144,49 @@ function AudioPlayer(props: IPlayer) {
   };
 
   const seek = (per: number) => {
-    if (!curItem?.howl) throw new Error('当前音频不存在!');
-    if (curItem.howl.playing()) {
-      const pos = curItem.howl.duration() * per;
-      curItem.howl.seek(pos);
+    const sound = props.list[index.current];
+    if (!sound.howl) {
+      throw new Error('当前音频不存在!');
+    }
+    if (sound.howl.playing()) {
+      const pos = sound.howl.duration() * per;
+      sound.howl.seek(pos);
       setProgress(pos);
     }
   };
 
   const step = () => {
-    if (curItem?.title === '讲真的') {
-      console.log('aaaa');
-    }
-    if (!(curItem && curItem.howl)) throw new Error('当前音频不存在!');
-    const seek = (curItem.howl.seek() as number) || 0;
+    const sound = props.list[index.current];
+    if (!sound.howl) throw new Error('当前音频不存在!');
+    const seek = (sound.howl.seek() as number) || 0;
     setTimer(formatTime(Math.round(seek)));
-    setProgress(((seek / curItem.howl.duration()) * 100) || 0);
+    setProgress(((seek / sound.howl.duration()) * 100) || 0);
 
-    if (curItem.howl.playing()) {
+    if (sound.howl.playing()) {
       requestAnimationFrame(step);
     }
   };
 
-  const changeRepeat = () => {};
-
-  useEffect(() => {
-    setCurItem(props.list[0]);
-  }, []);
+  const changeRepeat = () => {
+    switch (repeatType) {
+      case RepeatType.CYCLE:
+        setRepeatType(RepeatType.ONCE);
+        break;
+      case RepeatType.ONCE:
+        setRepeatType(RepeatType.RANDOM);
+        break;
+      case RepeatType.RANDOM:
+        setRepeatType(RepeatType.CYCLE);
+    };
+  };
 
   return (
     <div className="player-page">
         <h1 className="caption"><Link to="/list">我的私人音乐坊 &gt;</Link></h1>
         <div className="mt20 row">
             <div className="controll-wrapper">
-                <h2 className="music-title">{curItem?.title}</h2>
-                <h3 className="music-artist mt10">{curItem?.artist}</h3>
+                <h2 className="music-title">{props.list[index.current].title}</h2>
+                <h3 className="music-artist mt10">{props.list[index.current].artist}</h3>
                 <div className="row mt20">
                     <div className="left-time -col-auto">{timer}</div>
                     <div className="volume-container">
@@ -206,12 +215,12 @@ function AudioPlayer(props: IPlayer) {
                         <i className="icon next ml20" onClick={() => skip(IDirection.NEXT)} />
                     </div>
                     <div className="-col-auto">
-                        <i className={`icon repeat-${props.repeatType}`} onClick={changeRepeat} />
+                        <i className={`icon repeat-${repeatType}`} onClick={changeRepeat} />
                     </div>
                 </div>
             </div>
             <div className="-col-auto cover">
-                <img src={curItem?.cover} alt={curItem?.title} />
+                <img src={props.list[index.current].cover} alt={props.list[index.current].title} />
             </div>
         </div>
     </div>

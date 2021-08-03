@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { MouseEvent, useRef } from 'react';
 import './progress.css';
 
 interface IProgress {
@@ -10,7 +10,7 @@ interface IProgress {
 function Progress (props: IProgress) {
     const progressBar = useRef<HTMLDivElement>(null);
     
-    const changeProgress = (e) => {
+    const changeProgress = (e: MouseEvent) => {
         const node = progressBar.current;
         if (node === null) return;
         const progress = (e.clientX - node.getBoundingClientRect().left) / node.clientWidth;

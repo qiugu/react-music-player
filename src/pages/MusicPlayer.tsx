@@ -69,7 +69,7 @@ function MusicPlayer () {
         <div className="container">
             <Header />
             {/* <List musicList={MUSIC_LIST} currentMusicItem='' /> */}
-            <Player list={list} repeatType={repeatType} />
+            <Player list={list} />
             {/* {   React.cloneElement(this.props.children, this.state) } */}
         </div>
     );
