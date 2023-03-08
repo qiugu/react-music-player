@@ -7,10 +7,10 @@ interface IListItem {
 }
 
 function ListItem (props: IListItem) {
-    const playMusic = (item) => () => {
+    const playMusic = (item: any) => () => {
     };
 
-    const deleteHandle = (item) => (e) => {
+    const deleteHandle = (item: any) => (e: any) => {
         e.stopPropagation();
     };
 

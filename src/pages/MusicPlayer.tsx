@@ -8,12 +8,12 @@ function MusicPlayer () {
     const [ curMusicItem, setCurMusicItem ] = useState(MUSIC_LIST[0]);
     const [ repeatType, setRepeatType ] = useState(RepeatType.CYCLE);
 
-    const playMusic = (item) => {
+    const playMusic = (item: any) => {
 
         setCurMusicItem(item);
     };
 
-    const findMusicIndex = (music) => {
+    const findMusicIndex = (music: any) => {
         const index = list.findIndex((item) => {
             return item.id === music.id;
         });

@@ -1,8 +1,6 @@
 import React from 'react';
 import './static/reset.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-import Player from './pages/Player';
 import List from './pages/List';
 import MusicPlayer from './pages/MusicPlayer';
 import MUSIC_LIST from './config/musiclist';
