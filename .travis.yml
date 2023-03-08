@@ -4,4 +4,5 @@ services:
 
 before_install:
   - docker build -t music .
-  - docker run -p 80:8003 --name music-player music
+  - docker create -p 80:8003 --name music-player
+  - docker start music-player
