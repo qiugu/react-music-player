@@ -3,6 +3,10 @@ services:
   - docker
 
 before_install:
-  - docker build -t music .
-  - docker create -p 80:8003 --name music-player
-  - docker start music-player
+  - base-image=qiugu/dep:2.0
+  - music-image=qiugu/music:1.0
+  - docker pull $base-image || true
+  - docker pull $music-image || true
+  - docker build -t music:1.0 --cache-from $base-image --cache-from $music-image .
+  - docker push qiugu/dep:2.0
+  - docker push qiugu/music:1.0
