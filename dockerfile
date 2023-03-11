@@ -2,20 +2,18 @@ FROM node:16-buster-slim as dependency
 
 LABEL description="A demo Dockerfile for build Docsify."
 
-COPY . /var/web/
-
-WORKDIR /var/web
+COPY ./package.json /var/web/
 
 RUN set -x \
+&& cd /var/web \
 && npm install
 
 FROM node:16-buster-slim as builder
 
 COPY --from=0 /var/web /var/web
 
-WORKDIR /var/web
-
 RUN set -x \
+&& cd /var/web \
 && npm run build
 
 FROM nginx:1.23.1 as prod
