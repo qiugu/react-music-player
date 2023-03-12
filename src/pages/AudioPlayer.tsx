@@ -34,7 +34,7 @@ interface IPlayer {
 };
 
 function AudioPlayer(props: IPlayer) {
-  const index = useRef(0); // 播放列表索引
+  const [index, setIndex] = useState(0); // 播放列表索引
   const [ duration, setDuration ] = useState('0:00'); // 当前音频的总时长
   const [ timer, setTimer ] = useState('0:00'); // 当前音频播放的时间
   const [ progress, setProgress ] = useState(0); // 当前音频播放的位置
@@ -47,7 +47,7 @@ function AudioPlayer(props: IPlayer) {
    * @param index 播放音频的索引
    */
   const play = (idx?: number) => {
-    idx = typeof idx === 'number' ? idx : index.current;
+    idx = typeof idx === 'number' ? idx : index;
     const data = props.list[idx];
 
     let sound: Howl;
@@ -84,12 +84,12 @@ function AudioPlayer(props: IPlayer) {
 
     sound.play();
 
-    index.current = idx;
+    setIndex(idx);
     setIsPlay(true);
   };
 
   const pause = () => {
-    const sound = props.list[index.current];
+    const sound = props.list[index];
     if (!sound.howl) throw new Error('当前音频不存在!');
     sound.howl.pause();
     setIsPlay(false);
@@ -103,13 +103,13 @@ function AudioPlayer(props: IPlayer) {
     let idx = 0;
     switch (direction) {
       case IDirection.PREV:
-        idx = index.current - 1;
+        idx = index - 1;
         if (idx < 0) {
           idx = props.list.length - 1;
         }
         break;
       case IDirection.NEXT:
-        idx = index.current + 1;
+        idx = index + 1;
         if (idx > props.list.length - 1) {
           idx = 0;
         }
@@ -128,7 +128,7 @@ function AudioPlayer(props: IPlayer) {
    */
   const skipTo = (idx: number) => {
     // 停止当前播放的音频
-    const sound = props.list[index.current];
+    const sound = props.list[index];
     if (sound.howl !== undefined) {
       sound.howl.stop();
     }
@@ -144,7 +144,7 @@ function AudioPlayer(props: IPlayer) {
   };
 
   const seek = (per: number) => {
-    const sound = props.list[index.current];
+    const sound = props.list[index];
     if (!sound.howl) {
       throw new Error('当前音频不存在!');
     }
@@ -156,7 +156,7 @@ function AudioPlayer(props: IPlayer) {
   };
 
   const step = () => {
-    const sound = props.list[index.current];
+    const sound = props.list[index];
     if (!sound.howl) throw new Error('当前音频不存在!');
     const seek = (sound.howl.seek() as number) || 0;
     setTimer(formatTime(Math.round(seek)));
@@ -185,8 +185,8 @@ function AudioPlayer(props: IPlayer) {
         <h1 className="caption"><Link to="/list">我的私人音乐坊 &gt;</Link></h1>
         <div className="mt20 row">
             <div className="controll-wrapper">
-                <h2 className="music-title">{props.list[index.current].title}</h2>
-                <h3 className="music-artist mt10">{props.list[index.current].artist}</h3>
+                <h2 className="music-title">{props.list[index].title}</h2>
+                <h3 className="music-artist mt10">{props.list[index].artist}</h3>
                 <div className="row mt20">
                     <div className="left-time -col-auto">{timer}</div>
                     <div className="volume-container">
@@ -220,7 +220,7 @@ function AudioPlayer(props: IPlayer) {
                 </div>
             </div>
             <div className="-col-auto cover">
-                <img src={props.list[index.current].cover} alt={props.list[index.current].title} />
+                <img src={props.list[index].cover} alt={props.list[index].title} />
             </div>
         </div>
     </div>

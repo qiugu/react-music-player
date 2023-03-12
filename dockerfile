@@ -2,7 +2,7 @@ FROM node:16-buster-slim as dependency
 
 LABEL description="A demo Dockerfile for build Docsify."
 
-COPY ./package.json /var/web/
+COPY ./package.json ./package-lock.json /var/web/
 
 RUN set -x \
 && cd /var/web \
