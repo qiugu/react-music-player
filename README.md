@@ -1,6 +1,6 @@
 # music player
 
-React Hooks的音乐播放器
+React Hooks的音乐播放器（目前音乐链接已失效）
 
 ## 目前功能
 
