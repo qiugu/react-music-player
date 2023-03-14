@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build -t music:1.0 --cache-from $base-image --cache-from $music-image ../../
+        run: docker build -t music:1.0 --cache-from $base-image --cache-from $music-image .
       - name: Check out the repo
         uses: actions/checkout@v3
       
