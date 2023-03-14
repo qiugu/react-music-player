@@ -11,8 +11,8 @@ jobs:
     name: Push Docker image to multiple registries
     runs-on: ubuntu-latest
     env:
-      - BaseImage: qiugu/dep:2.0
-      - MusicImage: qiugu/music:1.0
+      BaseImage: qiugu/dep:2.0
+      MusicImage: qiugu/music:1.0
     permissions:
       packages: write
       contents: read
