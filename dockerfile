@@ -12,9 +12,12 @@ FROM node:16-buster-slim as builder
 
 COPY --from=0 /var/web /var/web
 
+COPY . /var/web
+
 RUN set -x \
 && cd /var/web \
-&& ls -al
+&& ls -l \
+&& npm run build
 
 FROM nginx:1.23.1 as prod
 
