@@ -18,7 +18,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
+        run: |
+        docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
+        ls -l
   push:
     needs: build
     name: Log in and push Docker image
@@ -42,7 +44,7 @@ jobs:
       - name: Build and export to Docker
         uses: docker/build-push-action@v4
         with:
-          context: ..
+          context: .
           load: true
           tags: ${{ env.TEST_TAG }}
 
