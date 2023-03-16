@@ -16,7 +16,6 @@ COPY . /var/web
 
 RUN set -x \
 && cd /var/web \
-&& ls -l \
 && npm run build
 
 FROM nginx:1.23.1 as prod
