@@ -13,9 +13,6 @@ jobs:
     env:
       BaseImage: qiugu/dep:2.0
       MusicImage: qiugu/music:1.0
-    permissions:
-      packages: write
-      contents: read
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
@@ -42,10 +39,10 @@ jobs:
 
       - name: Build and push
         uses: docker/build-push-action@v4
-        run:
-          - ls -l
         with:
           context: "{{defaultContext}}:mysubdir"
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+        run:
+          - ls -l
