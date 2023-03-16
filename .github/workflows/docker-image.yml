@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
-        run: |
+      - run: |
         docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
         ls -l
   push:
