@@ -38,18 +38,18 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: qiugu/music
+
+      - name: Test
+        run: |
+          ls -l
+          docker run --rm ${{ env.TEST_TAG }}     
       
       - name: Build and export to Docker
         uses: docker/build-push-action@v4
         with:
           context: .
           load: true
-          tags: ${{ env.TEST_TAG }}
-        run: ls -l
-
-      - name: Test
-        run: |
-          docker run --rm ${{ env.TEST_TAG }}      
+          tags: ${{ env.TEST_TAG }} 
 
       - name: Build and push
         uses: docker/build-push-action@v4
