@@ -41,8 +41,9 @@ jobs:
 
       - name: Test
         run: |
-          ls -l
-          docker run --rm ${{ env.TEST_TAG }}     
+          cd /tmp/buildkit-mount744218404/
+          ls -al
+          # docker run --rm ${{ env.TEST_TAG }}
       
       - name: Build and export to Docker
         uses: docker/build-push-action@v4
