@@ -41,7 +41,7 @@ jobs:
 
       - name: Test
         run: |
-          # cd /tmp
+          cd /tmp
           ls -al
           # docker run --rm ${{ env.TEST_TAG }}
       
@@ -49,7 +49,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: ./Dockerfile
+          file: docker/dockerfile/react-music-player/Dockerfile
           load: true
           tags: ${{ env.TEST_TAG }} 
 
