@@ -41,7 +41,7 @@ jobs:
 
       - name: Test
         run: |
-          cd /tmp
+          # cd /tmp
           ls -al
           # docker run --rm ${{ env.TEST_TAG }}
       
