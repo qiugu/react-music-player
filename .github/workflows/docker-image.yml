@@ -39,15 +39,6 @@ jobs:
         with:
           images: qiugu/music
 
-      - name: Test
-        run: |
-          cd /tmp
-          ls -al
-          # docker run --rm ${{ env.TEST_TAG }}
-      
-      - name: Build and export to Docker
-        uses: docker/build-push-action@v4
-
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
