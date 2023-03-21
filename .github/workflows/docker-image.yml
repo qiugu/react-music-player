@@ -19,9 +19,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: |
-        docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .\
-        docker push $MusicImage\
-        docker push $BaseImage
+          docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
+          docker push $MusicImage
+          docker push $BaseImage
   # push:
   #   needs: build
   #   name: Log in and push Docker image
