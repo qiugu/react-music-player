@@ -43,3 +43,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=qiugu/dep
+          cache-to: type=registry,ref=qiugu/music,mode=max
