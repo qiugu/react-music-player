@@ -5,14 +5,14 @@ on:
     branches: [ "final" ]
   pull_request:
     branches: [ "final" ]
+env:
+  BaseImage: qiugu/dep:2.0
+  MusicImage: qiugu/music:1.0
 
 jobs:
   build:
     name: Build base image and project image
     runs-on: ubuntu-latest
-    env:
-      BaseImage: qiugu/dep:2.0
-      MusicImage: qiugu/music:1.0
     steps:
       - uses: actions/checkout@v3
       - name: Build the Docker image
