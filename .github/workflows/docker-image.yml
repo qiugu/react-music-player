@@ -10,16 +10,15 @@ env:
   MusicImage: qiugu/music
 
 jobs:
+  # build:
+  #   name: Build base image and project image
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Build the Docker image
+  #       run: |
+  #         docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
   build:
-    name: Build base image and project image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: |
-          docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
-  push:
-    needs: build
     name: Log in and push Docker image
     runs-on: ubuntu-latest
     steps:
@@ -29,19 +28,24 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWD }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: |
-            qiugu/music
-            qiugu/dep
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: |
+          docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
 
-      - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=qiugu/dep
-          cache-to: type=registry,ref=qiugu/music,mode=max
+      # - name: Extract metadata (tags, labels) for Docker
+      #   id: meta
+      #   uses: docker/metadata-action@v4
+      #   with:
+      #     images: |
+      #       qiugu/music
+      #       qiugu/dep
+
+      # - name: Build and push
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     push: true
+      #     tags: ${{ steps.meta.outputs.tags }}
+      #     labels: ${{ steps.meta.outputs.labels }}
+      #     cache-from: type=registry,ref=qiugu/dep
+      #     cache-to: type=registry,ref=qiugu/music,mode=max
