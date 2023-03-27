@@ -34,8 +34,6 @@ jobs:
           docker pull $BaseImage || true
           docker pull $MusicImage || true
           docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
-          docker tag $BaseImage $BaseImage:final
-          docker tag $MusicImage $MusicImage:final
           docker push $BaseImage
           docker push $MusicImage
 
