@@ -28,12 +28,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWD }}
 
-      - uses: actions/checkout@v3
       - name: Build the Docker image
         run: |
           docker pull $BaseImage || true
           docker pull $MusicImage || true
-          docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
+          # docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
+          docker build -t $MusicImage .
           docker push $BaseImage
           docker push $MusicImage
 
