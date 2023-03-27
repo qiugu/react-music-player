@@ -2,8 +2,8 @@ FROM node:16-buster-slim as dependency
 
 LABEL description="A demo Dockerfile for build Music Player."
 
-COPY ./package.json ./package-lock.json /var/web/
-# COPY . /var/web
+# COPY ./package.json ./package-lock.json /var/web/
+COPY . /var/web
 
 RUN set -x \
 && cd /var/web \
