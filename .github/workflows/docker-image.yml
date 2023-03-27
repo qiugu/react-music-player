@@ -10,14 +10,6 @@ env:
   MusicImage: qiugu/music
 
 jobs:
-  # build:
-  #   name: Build base image and project image
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - name: Build the Docker image
-  #       run: |
-  #         docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
   build:
     name: Log in and push Docker image
     runs-on: ubuntu-latest
@@ -33,24 +25,7 @@ jobs:
         run: |
           docker pull $BaseImage || true
           docker pull $MusicImage || true
-          # docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
-          docker build -t $MusicImage .
+          docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
+          # docker build -t $MusicImage .
           docker push $BaseImage
           docker push $MusicImage
-
-      # - name: Extract metadata (tags, labels) for Docker
-      #   id: meta
-      #   uses: docker/metadata-action@v4
-      #   with:
-      #     images: |
-      #       qiugu/music
-      #       qiugu/dep
-
-      # - name: Build and push
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     push: true
-      #     tags: ${{ steps.meta.outputs.tags }}
-      #     labels: ${{ steps.meta.outputs.labels }}
-      #     cache-from: type=registry,ref=qiugu/dep
-      #     cache-to: type=registry,ref=qiugu/music,mode=max
