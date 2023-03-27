@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ "final" ]
 env:
-  BaseImage: qiugu/dep:latest
-  MusicImage: qiugu/music:latest
+  BaseImage: qiugu/dep:final
+  MusicImage: qiugu/music:final
 
 jobs:
   build:
