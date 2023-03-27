@@ -31,9 +31,11 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: |
+          docker pull $BaseImage || true
+          docker pull $MusicImage || true
           docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
-          docker tag $BaseImage 1.0
-          docker tag $MusicImage 1.0
+          docker tag $BaseImage $BaseImage:final
+          docker tag $MusicImage $MusicImage:final
           docker push $BaseImage
           docker push $MusicImage
 
