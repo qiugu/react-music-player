@@ -32,6 +32,8 @@ jobs:
       - name: Build the Docker image
         run: |
           docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
+          docker push $BaseImage
+          docker push $MusicImage
 
       # - name: Extract metadata (tags, labels) for Docker
       #   id: meta
