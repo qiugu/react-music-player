@@ -32,8 +32,8 @@ jobs:
       - name: Build the Docker image
         run: |
           docker build -t $MusicImage --cache-from $BaseImage --cache-from $MusicImage .
-          docker tag dep:1.0
-          docker tag music:1.0
+          docker tag $BaseImage 1.0
+          docker tag $MusicImage 1.0
           docker push $BaseImage
           docker push $MusicImage
 
