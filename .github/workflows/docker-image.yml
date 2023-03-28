@@ -5,8 +5,8 @@ on:
   pull_request:
     branches: [ "final" ]
 env:
-  BaseImage: qiugu/dep:2.0
-  MusicImage: qiugu/music:2.0
+  BaseImage: qiugu/dep
+  MusicImage: qiugu/music
 jobs:
   build:
     name: Log in and push Docker image
