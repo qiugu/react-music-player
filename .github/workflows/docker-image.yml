@@ -27,6 +27,5 @@ jobs:
           docker pull $MusicImage || true
           docker build -t $BaseImage --target dependency --cache-from $BaseImage --build-arg BUILDKIT_INLINE_CACHE=1 .
           docker build -t $MusicImage --cache-from $BaseImage --build-arg BUILDKIT_INLINE_CACHE=1 .
-          # docker build -t $MusicImage .
           docker push $BaseImage
           docker push $MusicImage
