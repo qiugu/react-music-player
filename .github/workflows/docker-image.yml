@@ -1,5 +1,4 @@
 name: Docker Image CI
-
 on:
   push:
     branches: [ "final" ]
@@ -8,7 +7,6 @@ on:
 env:
   BaseImage: qiugu/dep:2.0
   MusicImage: qiugu/music:2.0
-
 jobs:
   build:
     name: Log in and push Docker image
