@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ "final" ]
 env:
-  BaseImage: qiugu/dep:latest
-  MusicImage: qiugu/music:latest
+  BaseImage: qiugu/dep:2.0
+  MusicImage: qiugu/music:2.0
 
 jobs:
   build:
@@ -25,7 +25,7 @@ jobs:
         run: |
           docker pull $BaseImage || true
           docker pull $MusicImage || true
-          docker build -t $BaseImage --target dependency --cache-from $BaseImage --build-arg BUILDKIT_INLINE_CACHE=1 .
-          docker build -t $MusicImage --cache-from $BaseImage --build-arg BUILDKIT_INLINE_CACHE=1 .
+          docker build -t $BaseImage --target dependency --cache-from $BaseImage .
+          docker build -t $MusicImage --cache-from $BaseImage .
           docker push $BaseImage
           docker push $MusicImage
