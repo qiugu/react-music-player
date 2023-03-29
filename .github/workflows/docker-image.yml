@@ -21,9 +21,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: |
-          docker pull $BaseImage || true
-          docker pull $MusicImage || true
-          docker build -t $BaseImage --target dependency .
-          docker build -t $MusicImage .
+          # docker pull $BaseImage || true
+          # docker pull $MusicImage || true
+          docker build -t $BaseImage --target dependency --cache-from $BaseImage .
+          docker build -t $MusicImage --cache-from $BaseImage .
           docker push $BaseImage
           docker push $MusicImage
