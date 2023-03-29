@@ -23,7 +23,7 @@ jobs:
         run: |
           docker pull $BaseImage || true
           docker pull $MusicImage || true
-          docker build -t $BaseImage --target dependency --cache-from $BaseImage .
-          docker build -t $MusicImage --cache-from $BaseImage .
+          docker build -t $BaseImage --target dependency .
+          docker build -t $MusicImage .
           docker push $BaseImage
           docker push $MusicImage
